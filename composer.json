@@ -1,0 +1,35 @@
+{
+    "name": "franktiao/html-diff",
+    "description": "Compare two html text and return a merged html text.（对比两个html文本，返回一个合并差异后的html文本）",
+    "keywords": [
+        "html diff",
+        "rich text diff",
+        "html rich text diff"
+    ],
+    "homepage": "https://github.com/FrankTiao/html-diff",
+    "support": {
+        "issues": "https://github.com/FrankTiao/html-diff/issues",
+        "source": "https://github.com/FrankTiao/html-diff"
+    },
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "FrankTiao",
+            "email": "franktiao@163.com",
+            "homepage": "https://github.com/FrankTiao"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "htmlDiff\\": "src/",
+            "htmlDiff\\exceptions\\": "src/exceptions/",
+            "htmlDiff\\libraries\\": "src/libraries/"
+        }
+    }
+}
