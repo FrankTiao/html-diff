@@ -10,59 +10,54 @@ use htmlDiff\libraries\HtmlDiff as HtmlDiffLib;
 class HtmlDiff
 {
     /**
-     * @var string html文本1
+     * @var string html文本 旧版本
      */
-    private $text1 = '';
+    private $oldText = '';
 
     /**
-     * @var string html文本2
+     * @var string html文本 新版本
      */
-    private $text2 = '';
+    private $newText = '';
 
     /**
      * @var string 输出文档的绝对路径
      */
     private $output = '';
-
-    /**
-     * 忽略元素和属性的差异
-     * @var array
-     */
-    private $ignore = [];
+    
 
     /**
      * @return string
      */
-    public function getText1(): string
+    public function getOldText(): string
     {
-        return $this->text1;
+        return $this->oldText;
     }
 
     /**
-     * @param $text1
+     * @param $oldText
      * @return $this
      */
-    public function setText1(string $text1): HtmlDiff
+    public function setOldText(string $oldText): HtmlDiff
     {
-        $this->text1 = $text1;
+        $this->oldText = $oldText;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getText2(): string
+    public function getNewText(): string
     {
-        return $this->text2;
+        return $this->newText;
     }
 
     /**
-     * @param string $text2
+     * @param string $newText
      * @return $this
      */
-    public function setText2(string $text2): HtmlDiff
+    public function setNewText(string $newText): HtmlDiff
     {
-        $this->text2 = $text2;
+        $this->newText = $newText;
         return $this;
     }
 
@@ -83,50 +78,33 @@ class HtmlDiff
         $this->output = $output;
         return $this;
     }
-
-    /**
-     * @return array
-     */
-    public function getIgnore(): array
-    {
-        return $this->ignore;
-    }
-
-    /**
-     * @param array $ignore
-     * @return $this
-     */
-    public function setIgnore(array $ignore): HtmlDiff
-    {
-        $this->ignore = $ignore;
-        return $this;
-    }
+    
 
     /**
      * html文本是否不为空
-     * @param string $text1
-     * @param string $text2
+     * @param string $oldText
+     * @param string $newText
      * @throws MissingParameterException
      */
-    public function textIsEmpty(string $text1='', string  $text2='')
+    public function textIsEmpty(string $oldText='', string  $newText='')
     {
-        $text1 = $text1 === '' ? $this->text1 : $text1;
-        $text2 = $text2 === '' ? $this->text2 : $text2;
-        if (empty($text1) || empty($text2)){
+        $oldText = $oldText === '' ? $this->oldText : $oldText;
+        $newText = $newText === '' ? $this->newText : $newText;
+        if (empty($oldText) || empty($newText)){
             throw new MissingParameterException("Parameters are required");
         }
     }
 
     /**
      * 设置html文本
-     * @param string $text1
-     * @param string $text2
+     * @param string $oldText
+     * @param string $newText
      * @throws MissingParameterException
      */
-    private function setParams(string $text1, string $text2){
-        $this->textIsEmpty($text1, $text2);
-        $this->setText1($text1);
-        $this->setText2($text2);
+    private function setParams(string $oldText, string $newText){
+        $this->textIsEmpty($oldText, $newText);
+        $this->setOldText($oldText);
+        $this->setNewText($newText);
     }
 
     /**
@@ -150,7 +128,7 @@ class HtmlDiff
      */
     public function loadHtml1(string $file): HtmlDiff
     {
-        $this->load($file, 'text1');
+        $this->load($file, 'oldText');
         return $this;
     }
 
@@ -161,7 +139,7 @@ class HtmlDiff
      */
     public function loadHtml2(string $file): HtmlDiff
     {
-        $this->load($file, 'text2');
+        $this->load($file, 'newText');
         return $this;
     }
 
@@ -175,43 +153,40 @@ class HtmlDiff
     public function loadHtml(string $file1, string $file2): HtmlDiff
     {
         // 加载文件
-        $text1 = '';
-        $text2 = '';
+        $oldText = '';
+        $newText = '';
 
-        $this->setParams($text1, $text2);
+        $this->setParams($oldText, $newText);
         return $this;
     }
 
     /**
      * HtmlDiff constructor.
-     * @param string $text1 html文本1
-     * @param string $text2 html文本2
-     * @param array $ignore 配置
+     * @param string $oldText html文本1
+     * @param string $newText html文本2
      */
-    public function __construct(string $text1='', string $text2='', array $ignore=[])
+    public function __construct(string $oldText='', string $newText='')
     {
         try {
-            $this->setIgnore($ignore);
-            $this->setParams($text1, $text2);
-        } catch (MissingParameterException $e) {
-        }
+            $this->setParams($oldText, $newText);
+        } catch (MissingParameterException $e) {}
     }
 
     /**
      * 对比两个文本的差异
-     * @param string $text1
-     * @param string $text2
+     * @param string $oldText
+     * @param string $newText
      * @return string
      * @throws MissingParameterException
      */
-    public function diff(string $text1='', string $text2=''): string
+    public function diff(string $oldText='', string $newText=''): string
     {
         try {
-            $this->setParams($text1, $text2);
+            $this->setParams($oldText, $newText);
         } catch (MissingParameterException $e) {
             $this->textIsEmpty();
         }
 
-        return (HtmlDiffLib::instance())->diff($text1, $text2);
+        return (HtmlDiffLib::instance())->diff($oldText, $newText);
     }
 }
