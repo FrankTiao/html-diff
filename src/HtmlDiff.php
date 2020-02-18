@@ -82,15 +82,10 @@ class HtmlDiff
 
     /**
      * html文本是否不为空
-     * @param string $oldText
-     * @param string $newText
      * @throws MissingParameterException
      */
-    public function textIsEmpty(string $oldText='', string  $newText='')
-    {
-        $oldText = $oldText === '' ? $this->oldText : $oldText;
-        $newText = $newText === '' ? $this->newText : $newText;
-        if (empty($oldText) || empty($newText)){
+    public function textIsEmpty() {
+        if (empty($this->oldText) || empty($this->newText)){
             throw new MissingParameterException("Parameters are required");
         }
     }
@@ -102,7 +97,9 @@ class HtmlDiff
      * @throws MissingParameterException
      */
     private function setParams(string $oldText, string $newText){
-        $this->textIsEmpty($oldText, $newText);
+        if (empty($oldText) || empty($newText)){
+            throw new MissingParameterException("Parameters are required");
+        }
         $this->setOldText($oldText);
         $this->setNewText($newText);
     }
@@ -187,6 +184,6 @@ class HtmlDiff
             $this->textIsEmpty();
         }
 
-        return (HtmlDiffLib::instance())->diff($oldText, $newText);
+        return (HtmlDiffLib::instance())->diff($this->oldText, $this->newText);
     }
 }
