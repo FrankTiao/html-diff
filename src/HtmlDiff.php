@@ -125,7 +125,7 @@ class HtmlDiff
      * @return HtmlDiff
      * @throws InputException
      */
-    public function loadHtml1(string $file): HtmlDiff
+    public function loadOldFile(string $file): HtmlDiff
     {
         $this->load($file, 'oldText');
         return $this;
@@ -137,7 +137,7 @@ class HtmlDiff
      * @return HtmlDiff
      * @throws InputException
      */
-    public function loadHtml2(string $file): HtmlDiff
+    public function loadNewFile(string $file): HtmlDiff
     {
         $this->load($file, 'newText');
         return $this;
@@ -150,7 +150,7 @@ class HtmlDiff
      * @return HtmlDiff
      * @throws InputException
      */
-    public function loadHtml(string $oldFile, string $newFile): HtmlDiff
+    public function loadFile(string $oldFile, string $newFile): HtmlDiff
     {
         // 加载文件
         $this->load($oldFile, 'oldText');

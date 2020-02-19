@@ -16,7 +16,7 @@ $new = __DIR__."/html/new_file.html";
 
 try {
     $diff = new HtmlDiff();
-    $res = $diff->loadHtml($old, $new)->diff();
+    $res = $diff->loadFile($old, $new)->diff();
 } catch (MissingParameterException $e) {
     print_r($e->getMessage());die;
 } catch (InputException $e) {
