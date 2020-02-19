@@ -11,8 +11,8 @@ use htmlDiff\HtmlDiff;
 
 require __DIR__.'/../vendor/autoload.php';
 
-$old = __DIR__."/html/PHP_7.3.14 _changeLog.html";
-$new = __DIR__."/html/PHP_7.4.0_changeLog.html";
+$old = __DIR__ . "/html/old_file.html";
+$new = __DIR__."/html/new_file.html";
 
 try {
     $diff = new HtmlDiff();
