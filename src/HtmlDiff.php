@@ -196,7 +196,7 @@ class HtmlDiff
         $diff = HtmlDiffLib::instance()->diff($this->oldText, $this->newText);
 
         $output = $this->getOutput();
-        if (empty($output)){
+        if (empty($output['path'])){
             return $diff;
         }
 
