@@ -22,7 +22,9 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.0",
+        "ext-mbstring": "*",
+        "ext-iconv": "*"
     },
     "require-dev": {},
     "autoload": {

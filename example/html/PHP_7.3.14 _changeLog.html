@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PHP7.3.14 ChangeLog</title>
+</head>
+<body>
+    <section class="version" id="7.3.14"><!-- {{{ 7.3.14 -->
+    <h3>Version 7.3.14</h3>
+    <b><time class="releasedate" datetime="2020-01-23">23 Jan 2020</time></b>
+    <ul><li>Core:
+        <ul>
+            <li>Fixed bug <a href="http://bugs.php.net/78999">#78999</a> (Cycle leak when using function result as temporary).</li>
+        </ul></li>
+        <li>CURL:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/79033">#79033</a> (Curl timeout error with specific url and post).</li>
+            </ul></li>
+        <li>Date:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/79015">#79015</a> (undefined-behavior in php_date.c).</li>
+            </ul></li>
+        <li>DBA:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/78808">#78808</a> ([LMDB] MDB_MAP_FULL: Environment mapsize limit reached).</li>
+            </ul></li>
+        <li>Fileinfo:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/74170">#74170</a> (locale information change after mime_content_type).</li>
+            </ul></li>
+        <li>GD:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/78923">#78923</a> (Artifacts when convoluting image with transparency).</li>
+                <li>Fixed bug <a href="http://bugs.php.net/79067">#79067</a> (gdTransformAffineCopy() may use unitialized values).</li>
+                <li>Fixed bug <a href="http://bugs.php.net/79068">#79068</a> (gdTransformAffineCopy() changes interpolation method).</li>
+            </ul></li>
+        <li>Libxml:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/79029">#79029</a> (Use After Free's in XMLReader / XMLWriter).</li>
+            </ul></li>
+        <li>Mbstring:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/79037">#79037</a> (global buffer-overflow in `mbfl_filt_conv_big5_wchar`). (CVE-2020-7060)</li>
+            </ul></li>
+        <li>OPcache:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/79040">#79040</a> (Warning Opcode handlers are unusable due to ASLR).</li>
+            </ul></li>
+        <li>Pcntl:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/78402">#78402</a> (Converting null to string in error message is bad DX).</li>
+            </ul></li>
+        <li>PDO_PgSQL:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/78983">#78983</a> (pdo_pgsql config.w32 cannot find libpq-fe.h).</li>
+                <li>Fixed bug <a href="http://bugs.php.net/78980">#78980</a> (pgsqlGetNotify() overlooks dead connection).</li>
+                <li>Fixed bug <a href="http://bugs.php.net/78982">#78982</a> (pdo_pgsql returns dead persistent connection).</li>
+            </ul></li>
+        <li>Session:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/79091">#79091</a> (heap use-after-free in session_create_id()).</li>
+            </ul></li>
+        <li>Shmop:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/78538">#78538</a> (shmop memory leak).</li>
+            </ul></li>
+        <li>Standard:
+            <ul>
+                <li>Fixed bug <a href="http://bugs.php.net/79099">#79099</a> (OOB read in php_strip_tags_ex). (CVE-2020-7059)</li>
+                <li>Fixed bug <a href="http://bugs.php.net/54298">#54298</a> (Using empty additional_headers adding extraneous CRLF).</li>
+            </ul></li>
+    </ul>
+</section>
+</body>
+</html>

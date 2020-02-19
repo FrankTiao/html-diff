@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace htmlDiff;
 
 use htmlDiff\Exceptions\MissingParameterException;
+use htmlDiff\exceptions\InputException;
 use htmlDiff\libraries\HtmlDiff as HtmlDiffLib;
 
 class HtmlDiff
@@ -108,20 +109,21 @@ class HtmlDiff
      * 从文件中加载html文档
      * @param string $filePath 文件路径
      * @param string $textName html文档名
+     * @throws InputException
      */
     private function load(string $filePath, string $textName)
     {
         // 加载文件
-        $text = '';
-
+        $text = Utils::instance()->autoReadFile($filePath);
         $funName = "set".$textName;
         $this->$funName($text);
     }
 
     /**
-     * 从文件中加载html文档1
-     * @param string $file html文档1的绝对路径
-     * @return $this
+     * 从文件中加载旧版本html文档
+     * @param string $file
+     * @return HtmlDiff
+     * @throws InputException
      */
     public function loadHtml1(string $file): HtmlDiff
     {
@@ -130,9 +132,10 @@ class HtmlDiff
     }
 
     /**
-     * 从文件中加载html文档2
-     * @param string $file html文档2的绝对路径
-     * @return $this
+     * 从文件中加载新版本html文档
+     * @param string $file
+     * @return HtmlDiff
+     * @throws InputException
      */
     public function loadHtml2(string $file): HtmlDiff
     {
@@ -142,18 +145,16 @@ class HtmlDiff
 
     /**
      * 从文件中加载html文档
-     * @param string $file1 html文档1的绝对路径
-     * @param string $file2 html文档2的绝对路径
-     * @return $this
-     * @throws MissingParameterException
+     * @param string $oldFile
+     * @param string $newFile
+     * @return HtmlDiff
+     * @throws InputException
      */
-    public function loadHtml(string $file1, string $file2): HtmlDiff
+    public function loadHtml(string $oldFile, string $newFile): HtmlDiff
     {
         // 加载文件
-        $oldText = '';
-        $newText = '';
-
-        $this->setParams($oldText, $newText);
+        $this->load($oldFile, 'oldText');
+        $this->load($newFile, 'newText');
         return $this;
     }
 
@@ -184,6 +185,6 @@ class HtmlDiff
             $this->textIsEmpty();
         }
 
-        return (HtmlDiffLib::instance())->diff($this->oldText, $this->newText);
+        return HtmlDiffLib::instance()->diff($this->oldText, $this->newText);
     }
 }
