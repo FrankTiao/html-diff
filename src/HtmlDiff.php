@@ -21,9 +21,12 @@ class HtmlDiff
     private $newText = '';
 
     /**
-     * @var string 输出文档的绝对路径
+     * @var array 输出文档的绝对路径
      */
-    private $output = '';
+    private $output = [
+        'path'      => '',
+        'encode'    => ''
+    ];
     
 
     /**
@@ -63,20 +66,24 @@ class HtmlDiff
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getOutput(): string
+    public function getOutput(): array
     {
         return $this->output;
     }
 
     /**
-     * @param string $output
+     * @param string $outputPath
+     * @param string $encode
      * @return $this
      */
-    public function setOutput($output): HtmlDiff
+    public function setOutput(string $outputPath, string $encode="UTF-8"): HtmlDiff
     {
-        $this->output = $output;
+        $this->output = [
+            'path' => $outputPath,
+            'encode' => $encode,
+        ];
         return $this;
     }
     
@@ -176,6 +183,7 @@ class HtmlDiff
      * @param string $newText
      * @return string
      * @throws MissingParameterException
+     * @throws exceptions\OutputException
      */
     public function diff(string $oldText='', string $newText=''): string
     {
@@ -185,6 +193,15 @@ class HtmlDiff
             $this->textIsEmpty();
         }
 
-        return HtmlDiffLib::instance()->diff($this->oldText, $this->newText);
+        $diff = HtmlDiffLib::instance()->diff($this->oldText, $this->newText);
+
+        $output = $this->getOutput();
+        if (empty($output)){
+            return $diff;
+        }
+
+        Utils::instance()->writeFile($output['path'], $diff, $output['encode']);
+
+        return $diff;
     }
 }

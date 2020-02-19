@@ -5,6 +5,7 @@ namespace htmlDiff;
 
 
 use htmlDiff\exceptions\InputException;
+use htmlDiff\exceptions\OutputException;
 
 class Utils
 {
@@ -88,4 +89,19 @@ class Utils
         return "";
     }
 
+
+    /**
+     * 指定编码写入文件
+     * @param string $path
+     * @param string $string
+     * @param string $charset
+     * @throws OutputException
+     */
+    public function writeFile(string $path, string $string, $charset='UTF-8'){
+        $encode = mb_detect_encoding($string, ["ASCII","UTF-8","GB2312","GBK","BIG5"]);
+
+        if (file_put_contents($path, iconv($encode, $charset, $string)) === false){
+            throw new OutputException();
+        }
+    }
 }
