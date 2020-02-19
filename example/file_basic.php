@@ -7,6 +7,7 @@
 
 use htmlDiff\exceptions\InputException;
 use htmlDiff\Exceptions\MissingParameterException;
+use htmlDiff\exceptions\OutputException;
 use htmlDiff\HtmlDiff;
 
 require __DIR__.'/../vendor/autoload.php';
@@ -20,6 +21,8 @@ try {
 } catch (MissingParameterException $e) {
     print_r($e->getMessage());die;
 } catch (InputException $e) {
+    print_r($e->getMessage());die;
+} catch (OutputException $e) {
     print_r($e->getMessage());die;
 }
 
