@@ -37,20 +37,7 @@ class HtmlDiff extends Diff
      * @var array 单词列表 新文本
      */
     private $newWords = [];
-
-
-    /**
-     * [单例]
-     * @return HtmlDiff
-     */
-    public static function instance(): HtmlDiff  {
-        static $_instance;
-        if (!$_instance) {
-            $_instance = new self();
-        }
-        return $_instance;
-    }
-
+    
 
     public function diff(string $oldText, string $newText) {
         $this->oldWords = $this->convertHtmlToListOfWords($this->strSplitUtf8($oldText));
