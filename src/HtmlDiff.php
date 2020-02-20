@@ -27,6 +27,11 @@ class HtmlDiff
         'path'      => '',
         'encode'    => ''
     ];
+
+    /**
+     * @var array 自定义追加的单边标签
+     */
+    private $unilateralTags = ["img", "br", "hr", "link", "meta"];
     
 
     /**
@@ -84,6 +89,26 @@ class HtmlDiff
             'path' => $outputPath,
             'encode' => $encode,
         ];
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getUnilateralTags(): array
+    {
+        return $this->unilateralTags;
+    }
+
+    /**
+     * @param array $unilateralTags
+     * @return $this
+     */
+    public function setUnilateralTags(array $unilateralTags)
+    {
+        // 合并->去重->去空
+        $this->unilateralTags = array_filter(array_unique(array_merge($this->unilateralTags, $unilateralTags)));
         return $this;
     }
     
@@ -193,7 +218,11 @@ class HtmlDiff
             $this->textIsEmpty();
         }
 
-        $diff = (new HtmlDiffLib())->diff($this->oldText, $this->newText);
+        $htmlDiff = new HtmlDiffLib();
+
+        $htmlDiff->unilateralTags = $this->unilateralTags;
+
+        $diff = $htmlDiff->diff($this->oldText, $this->newText);
 
         $output = $this->getOutput();
         if (empty($output['path'])){
@@ -204,4 +233,5 @@ class HtmlDiff
 
         return $diff;
     }
+
 }

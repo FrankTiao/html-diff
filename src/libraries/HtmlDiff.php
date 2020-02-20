@@ -9,12 +9,17 @@ use htmlDiff\exceptions\IllegalParameter;
 class HtmlDiff extends Diff
 {
     /**
-     * @var array 开始标签
+     * @var array 单边标签
+     */
+    public $unilateralTags = [];
+
+    /**
+     * @var array 特殊开始标签
      */
     private $specialCaseOpeningTags = ["<strong[\\>\\s]+", "<b[\\>\\s]+", "<i[\\>\\s]+", "<big[\\>\\s]+", "<small[\\>\\s]+", "<u[\\>\\s]+", "<sub[\\>\\s]+", "<sup[\\>\\s]+", "<strike[\\>\\s]+", "<s[\\>\\s]+"];
 
     /**
-     * @var array 闭合标签
+     * @var array 特殊闭合标签
      */
     private $specialCaseClosingTags = ["</strong>", "</b>", "</i>", "</big>", "</small>", "</u>", "</sub>", "</sup>", "</strike>", "</s>"];
 
@@ -328,7 +333,7 @@ class HtmlDiff extends Diff
      * @param string $cssClass
      */
     private function processInsertOperation(Operation &$operation, string $cssClass) {
-        $text = $this->arraySliceByOffset($this->newWords, $operation->startInNew, $operation->endInNew ? $operation->endInNew : 0);
+        $text = $this->arraySliceByOffset($this->newWords, $operation->startInNew, $operation->endInNew);
         $this->insertTag("ins", $cssClass, $text);
     }
 
@@ -347,7 +352,7 @@ class HtmlDiff extends Diff
      * @param Operation $operation
      */
     private function processEqualOperation(Operation &$operation) {
-        $result = $this->arraySliceByOffset($this->newWords, $operation->startInNew, $operation->endInNew ? $operation->endInNew : 0);
+        $result = $this->arraySliceByOffset($this->newWords, $operation->startInNew, $operation->endInNew);
         $this->content[] = implode('', $result);
     }
 
@@ -371,23 +376,24 @@ class HtmlDiff extends Diff
             if (count($nonTags) != 0) {
                 $text = $this->wrapText(implode('', $nonTags), $tag, $cssClass);
                 $this->content[] = $text;
-            } else {
-                if (!!$this->pregMatchArray($this->specialCaseOpeningTags, $words[0]) ) {
-                    $specialCaseTagInjection = '<ins class=\'mod\'>';
+            }
+            else {
+                if (!!$this->pregMatchArray($this->specialCaseOpeningTags,  $words[0])) {
+                    $specialCaseTagInjection = "<$tag class='$cssClass'>";
                     if ($tag == 'del'){
                         array_shift($words);
                     }
 
-                } else if (in_array($words[0],$this->specialCaseClosingTags)) {
-                    $specialCaseTagInjection = '</ins>';
+                } else if (in_array($words[0], $this->specialCaseClosingTags)) {
+                    $specialCaseTagInjection = "</$tag>";
                     $specialCaseTagInjectionIsBefore = true;
-                    if ($tag == "del") {
+                    if ($tag == 'del'){
                         array_shift($words);
                     }
                 }
             }
 
-            if (count($words) == 0 && strlen($specialCaseTagInjection) == 0) {
+            if (empty($words) && strlen($specialCaseTagInjection) == 0) {
                 break;
             }
 
@@ -396,20 +402,26 @@ class HtmlDiff extends Diff
             } else {
                 $this->content[] = implode('', $this->extractConsecutiveWords($words, true)) . $specialCaseTagInjection;
             }
+
         }
     }
 
     /**
      * 获取words内连续的“文本”或“标签”
      * @param array $words
-     * @param bool $condition
+     * @param bool $condition true是否不是标签  false是否是标签
      * @return array
      */
     private function extractConsecutiveWords(array &$words, bool $condition): array {
         $indexOfFirstTag = false;
 
+
         for ($i = 0; $i < count($words); $i++) {
             $word = $words[$i];
+
+            if ($this->isUnilateralTag($word)) {
+                break;
+            }
 
             if ($condition ? !$this->isTag($word) : !!$this->isTag($word)) {
                 $indexOfFirstTag = $i;
@@ -422,12 +434,13 @@ class HtmlDiff extends Diff
             if ($indexOfFirstTag > 0) {
                 array_splice($words,0, $indexOfFirstTag);
             }
-            return $items;
         } else {
             $items = $words;
             $words = [];
-            return $items;
+
         }
+
+        return $items;
     }
 
     /**
@@ -436,6 +449,18 @@ class HtmlDiff extends Diff
      */
     private function isTag(string $item): bool {
         return $this->isOpeningTag($item) || $this->isClosingTag($item);
+    }
+
+    /**
+     * @param string $word
+     * @return bool
+     */
+    private function isUnilateralTag(string $word): bool {
+        $result = 0;
+        foreach($this->unilateralTags as $v) {
+            $result |= preg_match('/<'.$v.'.*?(?:>|\/>)/', $word);
+        }
+        return $result > 0;
     }
 
     /**

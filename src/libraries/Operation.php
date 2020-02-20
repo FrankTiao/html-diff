@@ -7,11 +7,11 @@ namespace htmlDiff\libraries;
 
 class Operation extends Diff
 {
-    public $action;
-    public $startInOld;
-    public $endInOld;
-    public $startInNew;
-    public $endInNew;
+    public $action = 0;
+    public $startInOld = 0;
+    public $endInOld = 0;
+    public $startInNew = 0;
+    public $endInNew = 0;
 
     public function __construct(int $action, int $startInOld, int $endInOld, int $startInNew, int $endInNew) {
         $this->action = $action;
