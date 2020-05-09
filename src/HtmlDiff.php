@@ -32,7 +32,7 @@ class HtmlDiff
      * @var array 自定义追加的单边标签
      */
     private $unilateralTags = ["img", "br", "hr", "link", "meta"];
-    
+
 
     /**
      * @return string
@@ -111,14 +111,14 @@ class HtmlDiff
         $this->unilateralTags = array_filter(array_unique(array_merge($this->unilateralTags, $unilateralTags)));
         return $this;
     }
-    
+
 
     /**
      * html文本是否不为空
      * @throws MissingParameterException
      */
     public function textIsEmpty() {
-        if (empty($this->oldText) || empty($this->newText)){
+        if ($this->oldText === null || $this->newText === null){
             throw new MissingParameterException("Parameters are required");
         }
     }
