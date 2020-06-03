@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace htmlDiff;
 
-use htmlDiff\Exceptions\MissingParameterException;
+use htmlDiff\exceptions\MissingParameterException;
 use htmlDiff\exceptions\InputException;
 use htmlDiff\libraries\HtmlDiff as HtmlDiffLib;
 

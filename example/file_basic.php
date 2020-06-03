@@ -6,7 +6,7 @@
  */
 
 use htmlDiff\exceptions\InputException;
-use htmlDiff\Exceptions\MissingParameterException;
+use htmlDiff\exceptions\MissingParameterException;
 use htmlDiff\exceptions\OutputException;
 use htmlDiff\HtmlDiff;
 

@@ -5,7 +5,7 @@
  * Example of basic usage
  */
 
-use htmlDiff\Exceptions\MissingParameterException;
+use htmlDiff\exceptions\MissingParameterException;
 use htmlDiff\HtmlDiff;
 
 require __DIR__.'/../vendor/autoload.php';
